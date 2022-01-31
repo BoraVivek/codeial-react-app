@@ -1,8 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getPosts } from "../api";
 import {Home} from "../pages";
+import {Loader} from "./";
+
 
 function App() {
+
+  // State for Posts
+  const [posts, setPosts] = useState([]);
+
+  // State for Loading
+  const [loading, setLoading] = useState(true);
 
   //Using React Hook, and calling the getPosts() function to fetch Posts
   useEffect(() => {
@@ -12,7 +20,14 @@ function App() {
 
       //Fetching Posts from the API
       const response = await getPosts();
-      console.log('response', response);
+      
+      // If the response is success, then store the posts in posts variable
+      if(response.success){
+        setPosts(response.data.posts);
+      }
+
+      // Once the content is loaded, set the loading to false.
+      setLoading(false);
     }
 
     //Calling the fetch posts functions
@@ -21,9 +36,17 @@ function App() {
     // [] - Ensures that this hook will be called only once the component is mounted.
   }, []);
 
+  // If the content is still being fetched, then show the loader.
+  if(loading){
+    return (
+      <Loader />
+    );
+  }
+
   return (
     <div className="App">
-      <Home />
+      {/* Passing posts to the Home Component */}
+      <Home posts = {posts} />
     </div>
   );
 }
