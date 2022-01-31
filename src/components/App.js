@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../api";
-import {Home} from "../pages";
-import {Loader} from "./";
+import { Home } from "../pages";
+import { Loader, Navbar } from "./";
 
 
 function App() {
@@ -20,9 +20,9 @@ function App() {
 
       //Fetching Posts from the API
       const response = await getPosts();
-      
+
       // If the response is success, then store the posts in posts variable
-      if(response.success){
+      if (response.success) {
         setPosts(response.data.posts);
       }
 
@@ -37,7 +37,7 @@ function App() {
   }, []);
 
   // If the content is still being fetched, then show the loader.
-  if(loading){
+  if (loading) {
     return (
       <Loader />
     );
@@ -45,8 +45,9 @@ function App() {
 
   return (
     <div className="App">
+      <Navbar />
       {/* Passing posts to the Home Component */}
-      <Home posts = {posts} />
+      <Home posts={posts} />
     </div>
   );
 }

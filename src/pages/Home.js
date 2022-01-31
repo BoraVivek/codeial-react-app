@@ -1,4 +1,6 @@
+import PropTypes from "prop-types";
 import styles from "../styles/home.module.css";
+import {Comment} from "../components";
 
 // We are getting posts in props, so we are de-structuring the props
 const Home = ({ posts }) => {
@@ -6,7 +8,7 @@ const Home = ({ posts }) => {
         <div className={styles.postList}>
             {/* Looping through the posts */}
             {posts.map((post) => (
-                <div className={styles.postWrapper}>
+                <div className={styles.postWrapper} key={`post-${post._id}`}>
                     <div className={styles.postHeader}>
                         <div className={styles.postAvatar}>
                             <img src="https://www.svgrepo.com/show/255192/profile.svg" alt="user-pic" />
@@ -19,12 +21,12 @@ const Home = ({ posts }) => {
                         <div className={styles.postActions}>
                             <div className={styles.postLike}>
                                 <img src="https://www.svgrepo.com/show/28731/like.svg" alt="likes-icon" />
-                                <span>5</span>
+                                <span>{post.likes.length}</span>
                             </div>
 
                             <div className={styles.postCommentsIcon}>
                                 <img src="https://www.svgrepo.com/show/357086/comments.svg" alt="comments-icon" />
-                                <span>2</span>
+                                <span>{post.comments.length}</span>
                             </div>
                         </div>
                         <div className={styles.postCommentBox}>
@@ -32,15 +34,12 @@ const Home = ({ posts }) => {
                         </div>
 
                         <div className={styles.postCommentsList}>
-                            <div className={styles.postCommentsItem}>
-                                <div className={styles.postCommentHeader}>
-                                    <span className={styles.postCommentAuthor}>Bill</span>
-                                    <span className={styles.postCommentTime}>a minute ago</span>
-                                    <span className={styles.postCommentLikes}>22</span>
-                                </div>
-
-                                <div className={styles.postCommentContent}>Random comment</div>
-                            </div>
+                            {/* Looping through comments, and rendering the Comment component by passing the comment to it. */}
+                            {post.comments.map((comment) => {
+                                return (
+                                    <Comment comment={comment} />
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
@@ -49,5 +48,11 @@ const Home = ({ posts }) => {
         </div>
     );
 };
+
+// Defining the propTypes properties
+Home.propTypes = {
+    // Telling that posts is of type array, and it is required, if the type of posts is somethign else, it will throw a proper error in console
+    posts: PropTypes.array.isRequired,
+}
 
 export default Home;
