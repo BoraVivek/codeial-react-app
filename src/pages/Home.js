@@ -37,7 +37,7 @@ const Home = ({ posts }) => {
                             {/* Looping through comments, and rendering the Comment component by passing the comment to it. */}
                             {post.comments.map((comment) => {
                                 return (
-                                    <Comment comment={comment} />
+                                    <Comment comment={comment} key={comment._id} />
                                 );
                             })}
                         </div>

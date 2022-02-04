@@ -1,8 +1,22 @@
 import { useEffect, useState } from "react";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import { getPosts } from "../api";
-import { Home } from "../pages";
+import { Home, Login } from "../pages";
 import { Loader, Navbar } from "./";
 
+const About = () => {
+  return <h1>About</h1>
+}
+
+const UserInfo = () => {
+  return <h1>User</h1>
+}
+
+const Page404 = () => {
+  return <h1>Page 404</h1>
+}
 
 function App() {
 
@@ -46,8 +60,16 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      {/* Passing posts to the Home Component */}
-      <Home posts={posts} />
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Home posts={posts} />} />
+          <Route exact path="/about" element={<About />} />
+          <Route exact path="/user/vivek" element={<UserInfo />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route element={<Page404 />} />
+        </Routes>
+      </Router>
+
     </div>
   );
 }
