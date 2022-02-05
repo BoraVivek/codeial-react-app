@@ -71,3 +71,12 @@ export const getPosts = (page = 1, limit = 5) => {
         method: 'GET',
     });
 }
+
+// Implementing the login functionality, which fetches the url from the constants file, and make a fetch request to the login api
+export const login = (email, password) => {
+    return customFetch(API_URLS.login(), {
+        method: 'POST',
+        // Passing email and password as body
+        body: {email, password}
+    });
+}

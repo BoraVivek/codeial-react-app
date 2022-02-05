@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../styles/login.module.css";
+import { login } from "../api";
 
 const Login = () => {
 
@@ -10,7 +11,7 @@ const Login = () => {
     const [loggingIn, setLoggingIn] = useState(false);
 
     // Handles the form submission 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         // Preventing default behavior of form
         e.preventDefault();
         //Setting the loggingin state to true, so that the button gets disabled.
@@ -20,6 +21,20 @@ const Login = () => {
         if(!email || !password){
             return toast.error("Please enter both email and password");
         }
+
+        // Calling the login functionality and perform fetch request to login api
+        const response = await login(email, password);
+
+        // If response is success, then show a toast notification showing success of login
+        if(response.success){
+            toast.success("Successfully logged in");
+        }else{
+            // If the response is not success, then show a toast notification showing error message
+            toast.error(response.message);
+        }
+
+        // Set Loggingin state to false, so that the Form button is enabled again
+        setLoggingIn(false);
     }
 
     return (
