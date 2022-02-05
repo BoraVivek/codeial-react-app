@@ -59,14 +59,17 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
+      {/* <Routes> Component should be child of <Router> Component */}
       <Router>
+        {/* Component containing <Link> Component, should be inside the <Router> Component */}
+        <Navbar /> 
+        {/* All <Route> Component should be child of <Routes> component. */}
         <Routes>
-          <Route exact path="/" element={<Home posts={posts} />} />
-          <Route exact path="/about" element={<About />} />
-          <Route exact path="/user/vivek" element={<UserInfo />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route element={<Page404 />} />
+          <Route path="/" element={<Home posts={posts} />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/user/vivek" element={<UserInfo />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Page404 />} /> {/* Creating a 404 Page by targeting the all selector */}
         </Routes>
       </Router>
 
