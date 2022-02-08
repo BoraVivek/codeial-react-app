@@ -1,4 +1,4 @@
-import {API_URLS, LOCALSTORAGE_TOKEN_KEY} from "../utils";
+import {API_URLS, getFormBody, LOCALSTORAGE_TOKEN_KEY} from "../utils";
 
 //Setting up custom fetch function
 const customFetch = async(url, { body, ...customConfig }) => {
@@ -8,8 +8,8 @@ const customFetch = async(url, { body, ...customConfig }) => {
 
     //Define Headers
     const headers = {
-        'content-type': 'application/json',
-        Accept: 'application/json',
+        // Our server expects body in x-www-form-url-encoded format
+        'content-type': 'application/x-www-form-url-encoded',
     }
 
     //If Token Exists in localstorage, add the authorization in headers
@@ -35,7 +35,10 @@ const customFetch = async(url, { body, ...customConfig }) => {
     //If body is present, then set the body in the config by stringifying it
     if(body){
         //JSON.stringify - Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
-        config.body = JSON.stringify(body);
+        // config.body = JSON.stringify(body);
+
+        // As we are using x-www-form-url-encoded format, we have to encode our data, before passing to the server, so we use the getFormBody function to encode our data
+        config.body = getFormBody(body);
     }
     
     try{

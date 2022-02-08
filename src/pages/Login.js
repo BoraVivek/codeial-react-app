@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../styles/login.module.css";
-import { login } from "../api";
+import { useAuth } from "../hooks";
 
 const Login = () => {
 
@@ -9,6 +9,10 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loggingIn, setLoggingIn] = useState(false);
+    
+    // Using the useAuth hook, to perform authentication functions of AuthContext
+    const auth = useAuth();
+    // console.log(auth);
 
     // Handles the form submission 
     const handleSubmit = async (e) => {
@@ -24,8 +28,8 @@ const Login = () => {
             return toast.error("Please enter both email and password");
         }
 
-        // Calling the login functionality and perform fetch request to login api
-        const response = await login(email, password);
+        // Using the login functionality form the context of AuthContext, as useAuth uses useContext(AuthContext) provider behind the scene. 
+        const response = await auth.login(email, password);
 
         // If response is success, then show a toast notification showing success of login
         if(response.success){
