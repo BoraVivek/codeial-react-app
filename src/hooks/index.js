@@ -1,7 +1,8 @@
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { AuthContext } from '../providers/AuthProvider';
 import { login as userLogin } from '../api';
-import { LOCALSTORAGE_TOKEN_KEY, removeItemFromLocalStorage, setItemInLocalStorage } from '../utils';
+import { getItemFromLocalStorage, LOCALSTORAGE_TOKEN_KEY, removeItemFromLocalStorage, setItemInLocalStorage } from '../utils';
+import jwtDecode from 'jwt-decode';
 
 // we are using it so that we don't have to call useContext again and again in every file, instead we will use useAuth
 export const useAuth = () => {
@@ -14,6 +15,24 @@ export const useProvideAuth = () => {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // Using useEffect just one time to check user authentication
+    useEffect(() => {
+        // Getting the token from the localstorage
+        const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
+
+        // Check if token exists
+        if(userToken){
+            // Decode the user info from the token
+            const user = jwtDecode(userToken);
+
+            // Set the decoded user in the state
+            setUser(user);
+        }
+
+        // Set the loading state to false
+        setLoading(false);
+    }, [])
     
     // Defining the Login function
     const login = async(email, password) => {
