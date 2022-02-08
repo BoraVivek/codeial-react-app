@@ -19,6 +19,8 @@ const Login = () => {
 
         // If email or password is not provided, then show a toast notification
         if(!email || !password){
+            // Set Loggingin state to false, so that the Form button is enabled again
+            setLoggingIn(false);
             return toast.error("Please enter both email and password");
         }
 
