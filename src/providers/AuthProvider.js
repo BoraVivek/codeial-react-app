@@ -9,6 +9,7 @@ const initialState = {
     login: () => {},
     logout: () => {},
     loading: true,
+    signup: () => {},
 }
 // Here we are creating our context, and exporting it
 export const AuthContext = createContext(initialState);

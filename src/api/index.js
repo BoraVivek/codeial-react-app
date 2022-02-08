@@ -9,7 +9,8 @@ const customFetch = async(url, { body, ...customConfig }) => {
     //Define Headers
     const headers = {
         // Our server expects body in x-www-form-url-encoded format
-        'content-type': 'application/x-www-form-url-encoded',
+        // We had written content-type in lowercase, which was causing error as 422 - Unprocessed Entity
+        'Content-Type': 'application/x-www-form-urlencoded',
     }
 
     //If Token Exists in localstorage, add the authorization in headers
@@ -82,4 +83,13 @@ export const login = (email, password) => {
         // Passing email and password as body
         body: {email, password}
     });
+}
+
+// Implementing the register functionality, which fetches the register url from the constants file, and make a fetch request to register the account
+export const register = async(name, email, password, confirmPassword) => {
+    return customFetch(API_URLS.signup(), {
+        method: 'POST',
+        // Passing email and password as body
+        body: {name, email, password, confirm_password: confirmPassword}
+    })
 }

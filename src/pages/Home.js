@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import styles from "../styles/home.module.css";
 import {Comment, Loader} from "../components";
 import { useEffect, useState } from "react";
@@ -91,9 +91,9 @@ const Home = () => {
 };
 
 // Defining the propTypes properties
-Home.propTypes = {
-    // Telling that posts is of type array, and it is required, if the type of posts is somethign else, it will throw a proper error in console
-    posts: PropTypes.array.isRequired,
-}
+// Home.propTypes = {
+//     // Telling that posts is of type array, and it is required, if the type of posts is somethign else, it will throw a proper error in console
+//     posts: PropTypes.array.isRequired,
+// }
 
 export default Home;
