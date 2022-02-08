@@ -1,6 +1,7 @@
 import {useContext, useState} from 'react';
 import { AuthContext } from '../providers/AuthProvider';
 import { login as userLogin } from '../api';
+import { LOCALSTORAGE_TOKEN_KEY, removeItemFromLocalStorage, setItemInLocalStorage } from '../utils';
 
 // we are using it so that we don't have to call useContext again and again in every file, instead we will use useAuth
 export const useAuth = () => {
@@ -22,6 +23,8 @@ export const useProvideAuth = () => {
         if(response.success){
             // Setting the user as the logged in user.
             setUser(response.data.user);
+            // Set the user token in LocalStorage
+            setItemInLocalStorage(LOCALSTORAGE_TOKEN_KEY, response.data.token ? response.data.token : null);
             // Returning Success
             return{
                 success: true
@@ -39,6 +42,8 @@ export const useProvideAuth = () => {
     const logout = () => {
         // Setting user as logout, when user logs out
         setUser(null);
+        // Remove token from localstorage on logout
+        removeItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
     }
 
     // Returning the user and loading state, along with login and logout functions.
