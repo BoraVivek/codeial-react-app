@@ -4,14 +4,6 @@ import { useAuth } from "../hooks";
 import { Home, Login } from "../pages";
 import { Loader, Navbar } from "./";
 
-const About = () => {
-  return <h1>About</h1>
-}
-
-const UserInfo = () => {
-  return <h1>User</h1>
-}
-
 const Page404 = () => {
   return <h1>Page 404</h1>
 }
@@ -35,8 +27,6 @@ function App() {
         {/* All <Route> Component should be child of <Routes> component. */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/user/vivek" element={<UserInfo />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Page404 />} /> {/* Creating a 404 Page by targeting the all selector */}
         </Routes>
