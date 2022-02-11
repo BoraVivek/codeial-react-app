@@ -18,7 +18,7 @@ const Navbar = () => {
                 {/* Show User Profile and Name, Only if user is logged in */}
                 {auth.user && 
                     <div className={styles.user}>
-                        <Link to="/">
+                        <Link to="/settings">
                             <img src="https://www.svgrepo.com/show/255192/profile.svg" alt="user-pic" className={styles.userDp} />
                         </Link>
                         <span>{auth.user.name}</span>
