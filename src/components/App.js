@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { useAuth } from "../hooks";
 import { Home, Login, Register, Settings } from "../pages";
@@ -6,6 +6,14 @@ import { Loader, Navbar } from "./";
 
 const Page404 = () => {
   return <h1>Page 404</h1>
+}
+
+// Private route- which protects the un-authorized access to pages
+function PrivateRoute ({children}){
+  const auth = useAuth(); //Getting the logged in users details
+
+  // If the user is logged in then render the child component, else redirect to login page
+  return auth.user ? children : <Navigate to="/login" />;
 }
 
 function App() {
@@ -29,7 +37,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/settings" element={<Settings />} />
+          {/* Here we are wrapping our element with PrivateRoute, so that only authorized users should be able to access it */}
+          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="*" element={<Page404 />} /> {/* Creating a 404 Page by targeting the all selector */}
         </Routes>
       </Router>
