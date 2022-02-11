@@ -1,6 +1,7 @@
 import styles from "../styles/settings.module.css";
 import { useAuth } from "../hooks";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Settings = () => {
 
@@ -14,9 +15,43 @@ const Settings = () => {
     const [savingForm, setSavingForm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
 
+
+    const clearForm = () => {
+        setPassword('');
+        setConfirmPassword('');
+    }
+
     //Function to update profile
-    const updateProfile = () => {
+    const updateProfile = async () => {
         setSavingForm(true);
+
+        let error = false;
+        if(!name || !password || !confirmPassword){
+            toast.error("Please fill all the fields");
+            error = true;
+        }
+
+        if(password !== confirmPassword){
+            toast.error("Password and Confirm Password does not match");
+            error = true;
+        }
+
+        if(error){
+            return setSavingForm(false);
+        }
+
+        const response = await auth.updateUser(auth.user._id, name, password, confirmPassword);
+
+        if(response.success){
+            setIsEditing(false);
+            setSavingForm(false);
+            clearForm();
+            return toast.success("User updated successfully");
+        }else{
+            toast.error(response.message);
+        }
+
+        setSavingForm(false);
     }
 
     return (
@@ -62,13 +97,13 @@ const Settings = () => {
                         <div className={styles.fieldLabel}>
                             Password
                         </div>
-                        <input type="password" name="password" id="password" value={password} onClick={(e) => setPassword(e.target.value)} />
+                        <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div className={styles.field}>
                         <div className={styles.fieldLabel}>
                             Confirm Password
                         </div>
-                        <input type="password" name="confirm_password" id="confirmPassword" value={confirmPassword} onClick={(e) => setConfirmPassword(e.target.value)} />
+                        <input type="password" name="confirm_password" id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                     </div>
                 </>
             }

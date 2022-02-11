@@ -93,3 +93,12 @@ export const register = async(name, email, password, confirmPassword) => {
         body: {name, email, password, confirm_password: confirmPassword}
     })
 }
+
+// Implementing the editing profile functionality
+export const editProfile = async(userId, name, password, confirmPassword) => {
+    return customFetch(API_URLS.editUser(), {
+        method: 'POST',
+        // Passing fields as body
+        body: {id:userId, name: name, password: password, confirm_password: confirmPassword}
+    })
+}
