@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "../styles/login.module.css";
 import toast from 'react-hot-toast';
 import { useAuth } from "../hooks";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -39,6 +39,12 @@ const Register = () => {
             setsigningUp(false);
             return toast.error(`Registration Failed: ${response.message}`);
         }
+    }
+
+    // If the user is logged in and tries to access the register page, then redirect him to Index Page
+    if(auth.user){
+        // Redirect is now Navigate in react-router-dom version 6
+        return <Navigate to="/" />
     }
 
     return(

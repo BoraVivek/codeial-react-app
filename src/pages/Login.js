@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../styles/login.module.css";
+import {Navigate} from 'react-router-dom';
 import { useAuth } from "../hooks";
 
 const Login = () => {
@@ -41,6 +42,12 @@ const Login = () => {
 
         // Set Loggingin state to false, so that the Form button is enabled again
         setLoggingIn(false);
+    }
+
+    // If the user is logged in and tries to access the login page, then redirect him to Index Page
+    if(auth.user){
+        // Redirect is now Navigate in react-router-dom version 6
+        return <Navigate to="/" />
     }
 
     return (
