@@ -3,6 +3,7 @@ import styles from "../styles/home.module.css";
 import {Comment, Loader} from "../components";
 import { useEffect, useState } from "react";
 import { getPosts } from "../api";
+import { Link } from "react-router-dom";
 
 // We are getting posts in props, so we are de-structuring the props
 const Home = () => {
@@ -54,7 +55,7 @@ const Home = () => {
                         <div className={styles.postAvatar}>
                             <img src="https://www.svgrepo.com/show/255192/profile.svg" alt="user-pic" />
                             <div>
-                                <span className={styles.postAuthor}>{post.user.name}</span>
+                                <Link to={`/user/${post.user._id}`} className={styles.postAuthor}>{post.user.name}</Link>
                                 <span className={styles.postTime}>a minute ago</span>
                             </div>
                         </div>

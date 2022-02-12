@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { useAuth } from "../hooks";
-import { Home, Login, Register, Settings } from "../pages";
+import { Home, Login, Register, Settings, UserProfile } from "../pages";
 import { Loader, Navbar } from "./";
 
 const Page404 = () => {
@@ -39,10 +39,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           {/* Here we are wrapping our element with PrivateRoute, so that only authorized users should be able to access it */}
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+          <Route path="/user/:userId" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
           <Route path="*" element={<Page404 />} /> {/* Creating a 404 Page by targeting the all selector */}
         </Routes>
       </Router>
-
     </div>
   );
 }
