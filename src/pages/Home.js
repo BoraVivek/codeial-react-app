@@ -55,7 +55,8 @@ const Home = () => {
                         <div className={styles.postAvatar}>
                             <img src="https://www.svgrepo.com/show/255192/profile.svg" alt="user-pic" />
                             <div>
-                                <Link to={`/user/${post.user._id}`} className={styles.postAuthor}>{post.user.name}</Link>
+                                {/* Passing state to the link, so that we can access it in the speicifed component, we are using state property directly over here as per v6 of react-router-dom instead of passing the state inside to property as shown in tutorial */}
+                                <Link state={{user: post.user}} to={`/user/${post.user._id}`} className={styles.postAuthor}>{post.user.name}</Link>
                                 <span className={styles.postTime}>a minute ago</span>
                             </div>
                         </div>
