@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from 'react';
 import { AuthContext } from '../providers/AuthProvider';
-import { editProfile, login as userLogin, register } from '../api';
+import { editProfile, login as userLogin, register, fetchUserFriends } from '../api';
 import { getItemFromLocalStorage, LOCALSTORAGE_TOKEN_KEY, removeItemFromLocalStorage, setItemInLocalStorage } from '../utils';
 import jwtDecode from 'jwt-decode';
 
@@ -16,22 +16,41 @@ export const useProvideAuth = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Using useEffect just one time to check user authentication
+    // Using useEffect just one time to check user authentication - It checks the token in localstorage and fetches the user info and decodes it and set the logged in user in the state. Mainly useful when we make page refreshes.
     useEffect(() => {
-        // Getting the token from the localstorage
-        const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
 
-        // Check if token exists
-        if(userToken){
-            // Decode the user info from the token
-            const user = jwtDecode(userToken);
+        const getUser = async() => {
+            // Getting the token from the localstorage
+            const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
 
-            // Set the decoded user in the state
-            setUser(user);
+            // Check if token exists
+            if(userToken){
+                // Decode the user info from the token
+                const user = jwtDecode(userToken);
+
+                // Fetching friends of logged in User
+                const response = await fetchUserFriends();
+
+                let friends = [];
+                // If friends exists, then store them in the friends variable
+                if(response.success){
+                    friends = response.data.friends;
+                }
+
+                // Set the decoded user in the state
+                // Setting the user and its friend in the state
+                setUser({
+                    ...user,
+                    friends,
+                });
+            }
+
+            // Set the loading state to false
+            setLoading(false);
         }
 
-        // Set the loading state to false
-        setLoading(false);
+        getUser();
+        
     }, [])
 
     // Updating the user profile, and on success changing the user state, and also updating token in localstorage

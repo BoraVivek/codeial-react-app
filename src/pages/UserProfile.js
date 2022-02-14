@@ -47,19 +47,16 @@ const UserProfile = () => {
     const checkIfUserIsAFriend = () => {
         // Storing friends list of logged in user
         const friends = auth.user.friends;
+        
+        // Mapping through the friends list of logged in user, and fetching the user Ids out of it
+        const friendIds = friends.map(friend => friend.to_user._id)
 
-        //If friends list exists then look if the user whose profile we are visiting is a friend or not
-        if(friends){
-            // Mapping through the friends list of logged in user, and fetching the user Ids out of it
-            const friendIds = friends.map(friend => friend.to_user._id)
+        //Checking if the userId present in Params exists in the friendsList of logged in user or not
+        const index = friendIds.indexOf(userId);
 
-            //Checking if the userId present in Params exists in the friendsList of logged in user or not
-            const index = friendIds.indexOf(userId);
-
-            // If user is present, then return true
-            if(index !== -1){
-                return true;
-            }
+        // If user is present, then return true
+        if(index !== -1){
+            return true;
         }
 
         //Return false if user is not found

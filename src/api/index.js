@@ -109,3 +109,10 @@ export const fetchUserProfile = (userId) => {
         method: 'GET',
     });
 }
+
+//Fetching logged in user's friends
+export const fetchUserFriends = () => {
+    return customFetch(API_URLS.friends(), {
+        method: 'GET',
+    });
+}
