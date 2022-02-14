@@ -133,6 +133,17 @@ export const useProvideAuth = () => {
             })
             return;
         }
+        
+        //remove the friend from the friends state of logged in user. Filter out the friend from the friends array
+        const newFriends = user.friends.filter(userFriend => userFriend.to_user._id !== friend.to_user._id);
+        
+        // If addFriend is false, then remove the friend from the friends state of logged in user.
+        setUser({
+            ...user,
+            // Filtering out the friend from the friends list to remove it from the state
+            friends: newFriends
+        })
+        
     }
 
     // Returning the user and loading state, along with login and logout functions.
