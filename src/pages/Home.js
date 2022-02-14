@@ -55,8 +55,7 @@ const Home = () => {
                         <div className={styles.postAvatar}>
                             <img src="https://www.svgrepo.com/show/255192/profile.svg" alt="user-pic" />
                             <div>
-                                {/* Passing state to the link, so that we can access it in the speicifed component, we are using state property directly over here as per v6 of react-router-dom instead of passing the state inside to property as shown in tutorial */}
-                                <Link state={{user: post.user}} to={`/user/${post.user._id}`} className={styles.postAuthor}>{post.user.name}</Link>
+                                <Link to={`/user/${post.user._id}`} className={styles.postAuthor}>{post.user.name}</Link>
                                 <span className={styles.postTime}>a minute ago</span>
                             </div>
                         </div>
@@ -91,11 +90,5 @@ const Home = () => {
         </div>
     );
 };
-
-// Defining the propTypes properties
-// Home.propTypes = {
-//     // Telling that posts is of type array, and it is required, if the type of posts is somethign else, it will throw a proper error in console
-//     posts: PropTypes.array.isRequired,
-// }
 
 export default Home;

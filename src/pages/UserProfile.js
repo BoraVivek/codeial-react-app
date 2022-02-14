@@ -1,21 +1,70 @@
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchUserProfile } from "../api";
+import { Loader } from "../components";
+import { useAuth } from "../hooks";
 import styles from "../styles/settings.module.css";
 
 const UserProfile = () => {
-    // We are using useLocation hook to access the props passed to the Link component and the details
-    // Location represent where the app is now, where you want it to go, or even where it was.
-    //useLocation provies the following details
-    /*  hash: ""
-        key: "xwrxrd3k"
-        pathname: "/user/620569ec6938bd457a869e59"
-        search: ""
-        state:
-            user: {_id: '620569ec6938bd457a869e59', email: 'payal@payal.com', name: 'payal'}
-    */
-    const location = useLocation();
 
-    // If state is undefined, we make user variable an empty string, otherwise it de-structures the user object from state which is passed to the Link component as state prop.
-    const {user = {}} = location.state;
+    const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const auth = useAuth();
+
+    // In route we have defined the path as /user/:userId , so we can access the userId from the params using the useParams hook.
+    const {userId} = useParams();
+
+    // Fetching User Info and setting the user in state.
+    useEffect(() => {
+        const getUser = async() => {
+            // Fetching the user profile details
+            const response = await fetchUserProfile(userId);
+
+            if(response.success){
+                // Setting the user state as the user detail fetched from api
+                setUser(response.data.user);
+            }else{
+                toast.error(response.message);
+                // Navigating the user to home page, if no user is found
+                return navigate('/', {replace: true});
+            }
+
+            //Set Loading state as false
+            setLoading(false);
+        }
+
+        getUser();
+    }, [userId, navigate]);
+
+    // If loading is true, then show the loader
+    if(loading){
+        return <Loader />;
+    }
+
+    // Function to check if a user is friend or not
+    const checkIfUserIsAFriend = () => {
+        // Storing friends list of logged in user
+        const friends = auth.user.friends;
+
+        //If friends list exists then look if the user whose profile we are visiting is a friend or not
+        if(friends){
+            // Mapping through the friends list of logged in user, and fetching the user Ids out of it
+            const friendIds = friends.map(friend => friend.to_user._id)
+
+            //Checking if the userId present in Params exists in the friendsList of logged in user or not
+            const index = friendIds.indexOf(userId);
+
+            // If user is present, then return true
+            if(index !== -1){
+                return true;
+            }
+        }
+
+        //Return false if user is not found
+        return false;
+    }
 
     return (
         <div className={styles.settings}>
@@ -44,12 +93,15 @@ const UserProfile = () => {
 
             {/* Buttons */}
             <div className={styles.btnGrp}>
-                <button className={`button ${styles.saveBtn}`} >
-                    Add Friend
-                </button>
-                <button className={`button ${styles.saveBtn}`} >
-                    Remove Friend
-                </button>
+                {/* If user is a friend then show the remove friend button, else show add friend button */}
+                {checkIfUserIsAFriend() ? 
+                    <button className={`button ${styles.saveBtn}`} >
+                        Remove Friend
+                    </button> : 
+                    <button className={`button ${styles.saveBtn}`} >
+                        Add Friend
+                    </button>
+                }
             </div>
         </div>
     );
