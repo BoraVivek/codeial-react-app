@@ -116,3 +116,10 @@ export const fetchUserFriends = () => {
         method: 'GET',
     });
 }
+
+//Adding Friend
+export const addFriend = (userId) => {
+    return customFetch(API_URLS.createFriendship(userId), {
+        method: 'POST',
+    });
+}

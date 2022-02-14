@@ -123,6 +123,18 @@ export const useProvideAuth = () => {
         removeItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
     }
 
+    // Updating User Friends
+    const updateUserFriends = (addFriend, friend) => {
+        // If addFriend is true, then add the new friend to the friends state of user.
+        if(addFriend){
+            setUser({
+                ...user,
+                friends: [...user.friends, friend],
+            })
+            return;
+        }
+    }
+
     // Returning the user and loading state, along with login and logout functions.
     return {
         user,
@@ -130,6 +142,7 @@ export const useProvideAuth = () => {
         logout,
         loading,
         signup,
-        updateUser
+        updateUser,
+        updateUserFriends
     }
 };

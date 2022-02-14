@@ -11,6 +11,7 @@ const initialState = {
     loading: true,
     signup: () => {},
     updateUser: () => {},
+    updateUserFriends: () => {}
 }
 // Here we are creating our context, and exporting it
 export const AuthContext = createContext(initialState);
