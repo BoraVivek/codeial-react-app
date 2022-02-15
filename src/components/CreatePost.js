@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { addPost } from "../api";
 import styles from "../styles/home.module.css";
 
 const CreatePost = () => {
@@ -8,10 +10,22 @@ const CreatePost = () => {
     const [addingPost, setAddingPost] = useState(false);
 
     /**
-     * TODO: Implement the functionality to add Post
+     * Implement the functionality to add Post
      */
-    const handleAddPostClick = () => {
+    const handleAddPostClick = async () => {
+        setAddingPost(true);
 
+        // TODO: Implement Post Validations
+        const response = await addPost(post);
+
+        if (response.success) {
+            setPost(''); //Clearing the textarea 
+            toast.success("Post Created Successfully"); //Showing Notification
+        } else {
+            toast.error(response.message);
+        }
+
+        setAddingPost(false);
     }
 
     return <div className={styles.createPost}>
