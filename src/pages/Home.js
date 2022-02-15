@@ -1,6 +1,6 @@
 // import PropTypes from "prop-types";
 import styles from "../styles/home.module.css";
-import { Comment, FriendsList, Loader } from "../components";
+import { Comment, CreatePost, FriendsList, Loader } from "../components";
 import { useEffect, useState } from "react";
 import { getPosts } from "../api";
 import { Link } from "react-router-dom";
@@ -53,6 +53,8 @@ const Home = () => {
     return (
         <div className={styles.home}>
             <div className={styles.postsList}>
+                {/* Loading Create Post Component */}
+                <CreatePost />
                 {/* Looping through the posts */}
                 {posts.map((post) => (
                     <div className={styles.postWrapper} key={`post-${post._id}`}>
