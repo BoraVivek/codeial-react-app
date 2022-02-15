@@ -68,25 +68,25 @@ const UserProfile = () => {
     }
 
     // Handle the remove friend functionality
-    const handleRemoveFriendClick = async() => {
+    const handleRemoveFriendClick = async () => {
         // Enable the request in progress state
         setRequestInProgress(true);
 
-         // Call the removeFriend api and remove the user as friend
+        // Call the removeFriend api and remove the user as friend
         const response = await removeFriend(userId);
 
         //Getting the friendship from the logged in users state.
         const friendship = auth.user.friends.filter(friend => friend.to_user._id === userId);
 
         // If response is success
-        if(response.success){
+        if (response.success) {
             // Update the user friends state, and pass the userId, to remove that userId from the friends list
             // Filter returns an array even if only 1 value is present, so we access the first element in the array to access our friendship
             auth.updateUserFriends(false, friendship[0]);
 
             // Show success message
             toast.success("Friend removed successfully");
-        }else{
+        } else {
             // Show error message
             toast.error(response.message);
         }
@@ -112,7 +112,7 @@ const UserProfile = () => {
             auth.updateUserFriends(true, friendship);
             // Show success message
             toast.success("Friend added successfully");
-        }else{
+        } else {
             // Show error in failure
             toast.error(response.message);
         }
@@ -151,7 +151,7 @@ const UserProfile = () => {
                 {/* If user is a friend then show the remove friend button, else show add friend button */}
                 {checkIfUserIsAFriend() ?
                     // On Clicking of button call the handleRemoveFriendsClick function
-                    <button className={`button ${styles.saveBtn}`}  onClick={handleRemoveFriendClick} disabled={requestInProgress}>
+                    <button className={`button ${styles.saveBtn}`} onClick={handleRemoveFriendClick} disabled={requestInProgress}>
                         {/* Show Removing Friend... or Remove Friend Based on the requestInProgress state */}
                         {requestInProgress ? 'Removing Friend...' : 'Remove Friend'}
                     </button> :
