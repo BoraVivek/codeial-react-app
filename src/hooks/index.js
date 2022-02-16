@@ -160,7 +160,6 @@ export const useProvideAuth = () => {
 
 /**
  * Posts Custom Hook for Handling the PostsContext
- * @returns {{addPostsToState: addPostsToState, data: *[], loading: boolean}}
  */
 
 //Creating a Custom Hook, so that instead of calling useContext, we use usePosts to fetch the current posts from PostsContext
@@ -172,7 +171,6 @@ export const usePosts = () => {
 
 /**
  * It returns the state for PostsContext
- * @returns {{addPostsToState: addPostsToState, data: *[], loading: boolean}}
  */
 export const useProvidePosts = () => {
     //Defining Posts and Loading State
@@ -203,8 +201,11 @@ export const useProvidePosts = () => {
         // [] - Ensures that this hook will be called only once the component is mounted.
     }, []);
 
-    const addPostsToState = () => {
+    //Adding new post to the posts state, so it updates the posts state, thus re-rendering the posts list
+    const addPostsToState = (post) => {
+        const newPosts = [post, ...posts];
 
+        setPosts(newPosts);
     }
 
     return {

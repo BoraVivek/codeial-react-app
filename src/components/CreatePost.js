@@ -2,12 +2,14 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { addPost } from "../api";
 import styles from "../styles/home.module.css";
+import { usePosts } from '../hooks';
 
 const CreatePost = () => {
 
     // * State for Post & Adding Post
     const [post, setPost] = useState('');
     const [addingPost, setAddingPost] = useState(false);
+    const posts = usePosts();
 
     /**
      * Implement the functionality to add Post
@@ -19,7 +21,8 @@ const CreatePost = () => {
         const response = await addPost(post);
 
         if (response.success) {
-            setPost(''); //Clearing the textarea 
+            setPost(''); //Clearing the textarea
+            posts.addPostsToState(response.data.post); //Call addPostsToState function to add the newly created post to the posts state.
             toast.success("Post Created Successfully"); //Showing Notification
         } else {
             toast.error(response.message);
