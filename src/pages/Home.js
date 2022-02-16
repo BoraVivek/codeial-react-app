@@ -1,50 +1,19 @@
 // import PropTypes from "prop-types";
 import styles from "../styles/home.module.css";
 import { Comment, CreatePost, FriendsList, Loader } from "../components";
-import { useEffect, useState } from "react";
-import { getPosts } from "../api";
 import { Link } from "react-router-dom";
-import { useAuth } from "../hooks";
+import { useAuth, usePosts } from '../hooks';
 
 // We are getting posts in props, so we are de-structuring the props
 const Home = () => {
-
-    // State for Posts
-    const [posts, setPosts] = useState([]);
-
-    // State for Loading
-    const [loading, setLoading] = useState(true);
-
-    // * Getting the logged in user state
+    // * Getting the logged-in user state
     const auth = useAuth();
 
 
-    //Using React Hook, and calling the getPosts() function to fetch Posts
-    useEffect(() => {
-
-        // We can't make useEffect directly as an async, so we define a function inside it and make it async
-        const fetchPosts = async () => {
-
-            //Fetching Posts from the API
-            const response = await getPosts();
-
-            // If the response is success, then store the posts in posts variable
-            if (response.success) {
-                setPosts(response.data.posts);
-            }
-
-            // Once the content is loaded, set the loading to false.
-            setLoading(false);
-        }
-
-        //Calling the fetch posts functions
-        fetchPosts();
-
-        // [] - Ensures that this hook will be called only once the component is mounted.
-    }, []);
+    const posts = usePosts();
 
     // If the content is still being fetched, then show the loader.
-    if (loading) {
+    if (posts.loading) {
         return (
             <Loader />
         );
@@ -56,7 +25,7 @@ const Home = () => {
                 {/* Loading Create Post Component */}
                 <CreatePost />
                 {/* Looping through the posts */}
-                {posts.map((post) => (
+                {posts.data.map((post) => (
                     <div className={styles.postWrapper} key={`post-${post._id}`}>
                         <div className={styles.postHeader}>
                             <div className={styles.postAvatar}>

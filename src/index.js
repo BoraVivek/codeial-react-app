@@ -4,13 +4,15 @@ import './styles/index.css';
 import { App } from "./components";
 
 import { Toaster } from 'react-hot-toast'; //React Notification Package
-import { AuthProvider } from './providers/AuthProvider';
+import { AuthProvider, PostsProvider } from './providers';
 
 ReactDOM.render(
   <React.StrictMode>
     {/* Here we are using the AuthProvider as JSX, which internally wraps the elements inside it into a AuthContext Component. */}
     <AuthProvider>
-      <App />
+      <PostsProvider>
+        <App />
+      </PostsProvider>
       <Toaster position='top-left' /> {/* Calling the Toaster component here, so that it works gloablly throughout our application */}
     </AuthProvider>
   </React.StrictMode>,

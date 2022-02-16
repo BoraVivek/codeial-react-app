@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from 'react';
-import { AuthContext } from '../providers/AuthProvider';
-import { editProfile, login as userLogin, register, fetchUserFriends } from '../api';
+import { AuthContext, PostsContext } from '../providers';
+import { editProfile, login as userLogin, register, fetchUserFriends, getPosts } from '../api';
 import { getItemFromLocalStorage, LOCALSTORAGE_TOKEN_KEY, removeItemFromLocalStorage, setItemInLocalStorage } from '../utils';
 import jwtDecode from 'jwt-decode';
 
@@ -9,7 +9,7 @@ export const useAuth = () => {
     return useContext(AuthContext);
 }
 
-// Here we are creating a custom hook, for authroization purposes.
+// Here we are creating a custom hook, for authorization purposes.
 export const useProvideAuth = () => {
     // Defining User and Loading state
 
@@ -157,3 +157,59 @@ export const useProvideAuth = () => {
         updateUserFriends
     }
 };
+
+/**
+ * Posts Custom Hook for Handling the PostsContext
+ * @returns {{addPostsToState: addPostsToState, data: *[], loading: boolean}}
+ */
+
+//Creating a Custom Hook, so that instead of calling useContext, we use usePosts to fetch the current posts from PostsContext
+export const usePosts = () => {
+    //Accepts a context object (the value returned from React.createContext)
+    // and returns the current context value, as given by the nearest context provider for the given context.
+    return useContext(PostsContext);
+}
+
+/**
+ * It returns the state for PostsContext
+ * @returns {{addPostsToState: addPostsToState, data: *[], loading: boolean}}
+ */
+export const useProvidePosts = () => {
+    //Defining Posts and Loading State
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    //Using React Hook, and calling the getPosts() function to fetch Posts
+    useEffect(() => {
+
+        // We can't make useEffect directly as an async, so we define a function inside it and make it async
+        const fetchPosts = async () => {
+
+            //Fetching Posts from the API
+            const response = await getPosts();
+
+            // If the response is success, then store the posts in posts variable
+            if (response.success) {
+                setPosts(response.data.posts);
+            }
+
+            // Once the content is loaded, set the loading to false.
+            setLoading(false);
+        }
+
+        //Calling the fetch posts functions
+        fetchPosts();
+
+        // [] - Ensures that this hook will be called only once the component is mounted.
+    }, []);
+
+    const addPostsToState = () => {
+
+    }
+
+    return {
+        data: posts,
+        loading,
+        addPostsToState,
+    }
+}
