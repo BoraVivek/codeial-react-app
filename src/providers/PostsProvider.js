@@ -6,6 +6,7 @@ const initialState = {
   data: [],
   loading: true,
   addPostsToState: () => {},
+  addCommentToPost: () => {},
 }
 
 //Creating PostsContext using the createContext and passing the initialState to it
