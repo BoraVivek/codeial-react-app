@@ -5,15 +5,16 @@ import { useProvidePosts } from '../hooks';
 const initialState = {
   data: [],
   loading: true,
-  addPostsToState: () => {},
-  addCommentToPost: () => {},
+  addPostsToState: () => { },
+  addCommentToPost: () => { },
+  deleteCommentFromPost: () => { },
 }
 
 //Creating PostsContext using the createContext and passing the initialState to it
 export const PostsContext = createContext(initialState);
 
 //Creating the PostsProvider Component, which fetches the children,
-export const PostsProvider = ({children}) => {
+export const PostsProvider = ({ children }) => {
   //Fetching the new state for PostsContext
   const posts = useProvidePosts();
 

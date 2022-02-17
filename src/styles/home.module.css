@@ -99,7 +99,7 @@
   padding: 5px 10px;
   position: relative;
 }
-.postCommentItem {
+.postCommentsItem {
   background: #eceffa;
   border-radius: 4px;
   padding: 10px;
@@ -127,7 +127,10 @@
   margin-left: 8px;
 }
 .postCommentContent {
-  margin-top: 7px;
+  /* margin-top: 7px; */
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 .postCommentsList .commentLike {
   position: absolute;
@@ -239,5 +242,9 @@
   outline: none;
 }
 .addPostBtn:hover {
+  cursor: pointer;
+}
+
+.deleteComment {
   cursor: pointer;
 }

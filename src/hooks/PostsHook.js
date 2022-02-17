@@ -68,10 +68,35 @@ export const useProvidePosts = () => {
         setPosts(newPosts);
     };
 
+    // Function which is used to delete comment from the post present in the posts state, so that the component re-renders after removing the comment.
+    const deleteCommentFromPost = (postId, commentId) => {
+
+        // Mapping through the posts
+        const newPosts = posts.map((post) => {
+
+            // If post is the post of comment
+            if (post._id === postId) {
+                // Then filter out the comment which needs to be removed, and store rest of the comments in a new variable
+                const newComments = post.comments.filter((comment) => {
+                    return comment._id !== commentId;
+                })
+
+                // Now return the post with the new comments, which doesn't include the deleted comment
+                return { ...post, comments: [...newComments] };
+            }
+            // Return the post directly, if it doesn't match the post of comment we want to delete.
+            return post;
+        })
+
+        // Set the newPosts in state
+        setPosts(newPosts);
+    }
+
     return {
         data: posts,
         loading,
         addPostsToState,
-        addCommentToPost
+        addCommentToPost,
+        deleteCommentFromPost
     };
 };

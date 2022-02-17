@@ -143,11 +143,18 @@ export const addPost = (content) => {
 
 //Add Comment Function
 export const addComment = (postId, content) => {
-    return customFetch(API_URLS.comment(),{
+    return customFetch(API_URLS.comment(), {
         method: 'POST',
         body: {
             post_id: postId,
             content: content,
         }
     });
+}
+
+//Delete Comment
+export const deleteComment = (commentId) => {
+    return customFetch(API_URLS.deleteComment(commentId), {
+        method: 'DELETE',
+    })
 }
