@@ -158,3 +158,10 @@ export const deleteComment = (commentId) => {
         method: 'DELETE',
     })
 }
+
+//Toggle Like Function
+export const toggleLike = (itemId, itemType) => {
+    return customFetch(API_URLS.toggleLike(itemId, itemType), {
+        method: 'POST',
+    });
+}

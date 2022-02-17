@@ -2,7 +2,7 @@ import styles from '../styles/home.module.css';
 import { Link } from 'react-router-dom';
 import { Comment } from './index';
 import { usePosts } from '../hooks';
-import { addComment } from '../api';
+import { addComment, toggleLike } from '../api';
 import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 
@@ -10,6 +10,7 @@ const Post = ({ post }) => {
 
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
+  const [processing, setProcessing] = useState(false); //Processing for Likes
   const posts = usePosts();
 
   const handleAddComment = async (e) => {
@@ -37,6 +38,29 @@ const Post = ({ post }) => {
 
   };
 
+  // Function to process the Like
+  const handlePostLikeClick = async () => {
+    // Making sure that there is no processing taking place already, to avoid multiple calling
+    if (!processing) {
+      // Set the processing to true, to prevent simulataneous calls on multiple button clicks.
+      setProcessing(true);
+
+      // Toggling the like
+      const response = await toggleLike(post._id, 'Post');
+
+      // If deleted, show message that the like has been removed
+      if (response.data.deleted) {
+        toast.success("Like removed successfully");
+      } else {
+        // Else, Show message that Like has been added
+        toast.success("Like added successfully");
+      }
+
+      // Set Processing to false, so that another action can be taken on the like button.
+      setProcessing(false);
+    }
+  }
+
 
   return (
     <div className={styles.postWrapper} key={`post-${post._id}`}>
@@ -51,7 +75,10 @@ const Post = ({ post }) => {
         <div className={styles.postContent}>{post.content}</div>
         <div className={styles.postActions}>
           <div className={styles.postLike}>
-            <img src='https://www.svgrepo.com/show/28731/like.svg' alt='likes-icon' />
+            {/* Implemented the like button, and on Click we call the handlePostLikeClick Button. */}
+            <button onClick={handlePostLikeClick}>
+              <img src='https://www.svgrepo.com/show/28731/like.svg' alt='likes-icon' />
+            </button>
             <span>{post.likes.length}</span>
           </div>
 
